@@ -45,7 +45,11 @@ The usage of the plugin it's pretty simple, first you define the options (inside
  - **inputFilePath**: (required) it tells the plugin where to search sass and css files (it is not recursive, this means that it will only search inside this directory and not inside its subdirectory)
  - **outputFilePath**: where the file output should be saved (it is saved as style.css)
  - **sass**: true consider .sass files, false consider .scss files
- - **outputStyle** 
+ - **outputStyle** : possible style are "nested" (default), "compressed" (minified), "compact" and "expanded"
+
+and then you can call the task:
+
+    compileSass
 
 ## Built With :hammer:
 

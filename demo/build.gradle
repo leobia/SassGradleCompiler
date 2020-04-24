@@ -6,7 +6,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.lbia.gradle:sassjavacompiler:0.0.1"
+        classpath "com.leobia.gradle:sassjavacompiler:0.0.1"
     }
 }
 
@@ -14,7 +14,7 @@ plugins {
     id "java"
 }
 
-apply plugin: "com.lbia.gradle.sassjavacompiler"
+apply plugin: "com.leobia.gradle.sassjavacompiler"
 
 sassOptions {
     inputFilePath = file("./resources/sass/")

@@ -1,4 +1,4 @@
-package com.lbia.gradle;
+package com.leobia.gradle;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;

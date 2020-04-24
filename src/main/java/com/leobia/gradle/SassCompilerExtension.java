@@ -1,4 +1,4 @@
-package com.lbia.gradle;
+package com.leobia.gradle;
 
 public class SassCompilerExtension {
 

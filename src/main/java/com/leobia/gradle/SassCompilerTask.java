@@ -1,4 +1,4 @@
-package com.lbia.gradle;
+package com.leobia.gradle;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.TaskAction;

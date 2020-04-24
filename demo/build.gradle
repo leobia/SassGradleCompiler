@@ -1,0 +1,23 @@
+buildscript {
+    repositories {
+        maven {
+            url uri("../repo")
+        }
+    }
+
+    dependencies {
+        classpath "com.lbia.gradle:sassjavacompiler:0.0.1"
+    }
+}
+
+plugins {
+    id "java"
+}
+
+apply plugin: "com.lbia.gradle.sassjavacompiler"
+
+sassOptions {
+    inputFilePath = file("./resources/sass/")
+    outputFilePath = file("./resources/minified/")
+    minify = true
+}

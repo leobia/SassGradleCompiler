@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+    id 'java-gradle-plugin'
+    id 'maven'
+}
+
+group 'com.lbia.gradle'
+version '0.0.1'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+gradlePlugin {
+    plugins {
+        sassJavaCompiler {
+            id = 'com.lbia.gradle.sassjavacompiler'
+            implementationClass = 'com.lbia.gradle.SassCompilerPlugin'
+        }
+    }
+}
+
+dependencies {
+    implementation gradleApi()
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('./repo'))
+        }
+    }
+}

@@ -43,7 +43,7 @@ pluginBundle {
     tags = ["sass", "css", "compile", "minify", "build", "build artifacts", "cd", "ci", "files", "java"]
 
     plugins {
-        testCoverageReporter {
+        sassJavaCompiler {
             displayName = "Sass Compiler and Minifier"
         }
     }

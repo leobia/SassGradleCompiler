@@ -8,6 +8,7 @@ import javax.inject.Inject;
 public class SassCompilerTask extends DefaultTask {
 
     private SassCompilerExtension extension;
+    private SassCompiler compiler;
 
     @Inject
     public SassCompilerTask(SassCompilerExtension extension) {
@@ -16,9 +17,8 @@ public class SassCompilerTask extends DefaultTask {
 
     @TaskAction
     public void compileSass() {
-        System.out.println("input path: " + extension.getInputFilePath());
-        System.out.println("output path: " + extension.getOutputFilePath());
-        System.out.println("minify: " + extension.isMinify());
+        compiler = new SassCompiler(getLogger());
+        compiler.compile(extension);
     }
 
 }

@@ -21,7 +21,6 @@ public class SassCompiler {
     private final Logger logger;
     private final Options options;
 
-
     public SassCompiler(Logger logger) {
         options = new Options();
         options.setIsIndentedSyntaxSrc(true);

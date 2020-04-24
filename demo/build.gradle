@@ -17,7 +17,7 @@ plugins {
 apply plugin: "com.leobia.gradle.sassjavacompiler"
 
 sassOptions {
-    inputFilePath = file("./resources/sass/")
+    inputFilePath = file("./resources/")
     outputFilePath = file("./resources/minified/")
     minify = true
 }

@@ -20,4 +20,6 @@ sassOptions {
     inputFilePath = file("./resources/")
     outputFilePath = file("./resources/minified/")
     minify = true
+    sass = true
+    outputStyle = "nested"
 }

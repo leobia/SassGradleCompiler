@@ -12,9 +12,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SassCompiler {
 
+    private static final String SCSS = "scss";
     private static final String SASS = "sass";
     private static final String CSS = "css";
     private final Logger logger;
@@ -32,17 +35,11 @@ public class SassCompiler {
             List<File> inputFiles = getInputFiles(extension);
             File outputFile = getOutputFile(extension);
 
-            StringBuilder css = new StringBuilder();
-
-            Compiler sassCompiler = new Compiler();
-
-            for (File inputFile : inputFiles) {
-                Output output = sassCompiler.compileFile(inputFile.toURI(), outputFile.toURI(), options);
-                css.append(output.getCss());
-            }
-
-            write(outputFile, css.toString());
+            StringBuilder css = getCss(inputFiles, outputFile);
+            write(outputFile, minify(css));
             logger.info("Sass compilation completed");
+
+
         } catch (IOException e) {
             throw new GradleException("No privilege to create new files!", e);
         } catch (InputPathNotProvidedException e) {
@@ -50,6 +47,28 @@ public class SassCompiler {
         } catch (CompilationException e) {
             throw new GradleException("Sass compilation failed!", e);
         }
+    }
+
+    private StringBuilder getCss(List<File> inputFiles, File outputFile) throws CompilationException {
+        StringBuilder css = new StringBuilder();
+
+        Compiler sassCompiler = new Compiler();
+
+        for (File inputFile : inputFiles) {
+            Output output = sassCompiler.compileFile(inputFile.toURI(), outputFile.toURI(), options);
+            css.append(output.getCss());
+        }
+        return css;
+    }
+
+    private String minify(StringBuilder css) {
+        String cssString = css.toString();
+        if (OutputStyle.COMPRESSED.equals(options.getOutputStyle())) {
+            Pattern replace = Pattern.compile(options.getLinefeed());
+            Matcher matcher = replace.matcher(cssString);
+            cssString = matcher.replaceAll("");
+        }
+        return cssString;
     }
 
     private void setOptionsByExtension(SassCompilerExtension extension) {
@@ -116,14 +135,14 @@ public class SassCompiler {
 
         File inputFile = new File(inputFilePath);
         if (inputFile.exists()) {
-            if (inputFile.isFile() && isSassFile(inputFile)) {
+            if (inputFile.isFile() && isSassFile(inputFile, extension.isSass())) {
                 sassFiles.add(inputFile);
             } else if (inputFile.isDirectory()) {
                 File[] files = inputFile.listFiles();
 
                 if (files != null && files.length > 0) {
                     for (File file : files) {
-                        if (isSassFile(file) && !pathEqualsToOutput(file, extension)) {
+                        if (isSassFile(file, extension.isSass()) && !pathEqualsToOutput(file, extension)) {
                             sassFiles.add(file);
                         }
                     }
@@ -179,14 +198,18 @@ public class SassCompiler {
         return output;
     }
 
-    private boolean isSassFile(File file) {
+    private boolean isSassFile(File file, boolean sass) {
         boolean isSass = false;
 
         if (file != null && file.isFile()) {
             String fileName = file.getName();
             if (fileName.contains(".")) {
                 String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
-                isSass = SASS.equals(extension.toLowerCase()) || CSS.equals(extension.toLowerCase());
+                if (sass) {
+                    isSass = SASS.equals(extension.toLowerCase()) || CSS.equals(extension.toLowerCase());
+                } else {
+                    isSass = SCSS.equals(extension.toLowerCase()) || CSS.equals(extension.toLowerCase());
+                }
             }
         }
 

@@ -26,7 +26,6 @@ public class SassCompiler {
     }
 
     public void compile(SassCompilerExtension extension) {
-
         try {
             setOptionsByExtension(extension);
 
@@ -56,16 +55,18 @@ public class SassCompiler {
     private void setOptionsByExtension(SassCompilerExtension extension) {
         options.setIsIndentedSyntaxSrc(extension.isSass());
         options.setOutputStyle(retrieveStyle(extension.getOutputStyle()));
-        options.setOmitSourceMapUrl(extension.isOmitSourceMap());
-        options.setIndent(retrieveIndent(extension.getIndentSpaces()));
+        options.setOmitSourceMapUrl(true);
+        options.setIndent(retrieveIndent(extension.isIndentWithTabs()));
     }
 
-    private String retrieveIndent(Integer indentSpaces) {
-        StringBuilder indent = new StringBuilder();
-        for (int i = 0; i < indentSpaces; i++) {
-            indent.append(" ");
+    private String retrieveIndent(boolean useTab) {
+        String indent = "  ";
+
+        if (useTab) {
+            indent = "\t";
         }
-        return indent.toString();
+
+        return indent;
     }
 
     private OutputStyle retrieveStyle(String outputStyle) {
@@ -106,7 +107,7 @@ public class SassCompiler {
      * @param extension defined by user
      */
     private List<File> getInputFiles(SassCompilerExtension extension) throws InputPathNotProvidedException {
-        String inputFilePath = extension.getInputFilePath();
+        String inputFilePath = extension.getInputPath();
         List<File> sassFiles = new ArrayList<>();
         if (inputFilePath == null || inputFilePath.isEmpty()) {
             throw new InputPathNotProvidedException();
@@ -154,9 +155,9 @@ public class SassCompiler {
     }
 
     private String getOutputFilePath(SassCompilerExtension extension, boolean shouldLog) {
-        String outputFilePath = extension.getOutputFilePath();
+        String outputFilePath = extension.getOutputPath();
         if (outputFilePath == null || outputFilePath.isEmpty()) {
-            outputFilePath = addToPath(extension.getInputFilePath(), "minified");
+            outputFilePath = addToPath(extension.getInputPath(), "minified");
             if (shouldLog) {
                 logger.warn("outputFilePath was not provided... saving files in {}", outputFilePath);
             }

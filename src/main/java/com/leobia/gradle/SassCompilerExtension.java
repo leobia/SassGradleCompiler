@@ -2,39 +2,29 @@ package com.leobia.gradle;
 
 public class SassCompilerExtension {
 
-    private String inputFilePath;
-    private String outputFilePath;
-    private boolean minify;
-    private boolean sass = true;
-    private boolean omitSourceMap = true;
+    private String inputPath;
+    private String outputPath;
     private String outputStyle;
-    private Integer indentSpaces = 2;
+    private boolean sass = true;
+    private boolean indentWithTabs = false;
 
     public SassCompilerExtension() {
     }
 
-    public String getInputFilePath() {
-        return inputFilePath;
+    public String getInputPath() {
+        return inputPath;
     }
 
-    public void setInputFilePath(String inputFilePath) {
-        this.inputFilePath = inputFilePath;
+    public void setInputPath(String inputPath) {
+        this.inputPath = inputPath;
     }
 
-    public String getOutputFilePath() {
-        return outputFilePath;
+    public String getOutputPath() {
+        return outputPath;
     }
 
-    public void setOutputFilePath(String outputFilePath) {
-        this.outputFilePath = outputFilePath;
-    }
-
-    public boolean isMinify() {
-        return minify;
-    }
-
-    public void setMinify(boolean minify) {
-        this.minify = minify;
+    public void setOutputPath(String outputPath) {
+        this.outputPath = outputPath;
     }
 
     public boolean isSass() {
@@ -45,14 +35,6 @@ public class SassCompilerExtension {
         this.sass = sass;
     }
 
-    public boolean isOmitSourceMap() {
-        return omitSourceMap;
-    }
-
-    public void setOmitSourceMap(boolean omitSourceMap) {
-        this.omitSourceMap = omitSourceMap;
-    }
-
     public String getOutputStyle() {
         return outputStyle;
     }
@@ -61,11 +43,11 @@ public class SassCompilerExtension {
         this.outputStyle = outputStyle;
     }
 
-    public Integer getIndentSpaces() {
-        return indentSpaces;
+    public boolean isIndentWithTabs() {
+        return indentWithTabs;
     }
 
-    public void setIndentSpaces(Integer indentSpaces) {
-        this.indentSpaces = indentSpaces;
+    public void setIndentWithTabs(boolean indentWithTabs) {
+        this.indentWithTabs = indentWithTabs;
     }
 }

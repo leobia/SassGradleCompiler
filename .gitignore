@@ -4,3 +4,4 @@ build/
 demo/.gradle/
 demo/build/
 repo/
+/demo/

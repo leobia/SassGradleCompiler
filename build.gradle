@@ -11,7 +11,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 gradlePlugin {
@@ -25,6 +25,7 @@ gradlePlugin {
 
 dependencies {
     implementation gradleApi()
+    compile('io.bit3:jsass:5.10.3')
 }
 
 uploadArchives {

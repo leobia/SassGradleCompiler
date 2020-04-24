@@ -1,10 +1,8 @@
 package com.leobia.gradle;
 
 import com.leobia.gradle.exception.InputPathNotProvidedException;
-import io.bit3.jsass.CompilationException;
 import io.bit3.jsass.Compiler;
-import io.bit3.jsass.Options;
-import io.bit3.jsass.Output;
+import io.bit3.jsass.*;
 import org.gradle.api.GradleException;
 import org.gradle.api.logging.Logger;
 
@@ -18,18 +16,20 @@ import java.util.List;
 public class SassCompiler {
 
     private static final String SASS = "sass";
+    private static final String CSS = "css";
     private final Logger logger;
     private final Options options;
 
     public SassCompiler(Logger logger) {
         options = new Options();
-        options.setIsIndentedSyntaxSrc(true);
         this.logger = logger;
     }
 
     public void compile(SassCompilerExtension extension) {
 
         try {
+            setOptionsByExtension(extension);
+
             List<File> inputFiles = getInputFiles(extension);
             File outputFile = getOutputFile(extension);
 
@@ -51,6 +51,44 @@ public class SassCompiler {
         } catch (CompilationException e) {
             throw new GradleException("Sass compilation failed!", e);
         }
+    }
+
+    private void setOptionsByExtension(SassCompilerExtension extension) {
+        options.setIsIndentedSyntaxSrc(extension.isSass());
+        options.setOutputStyle(retrieveStyle(extension.getOutputStyle()));
+        options.setOmitSourceMapUrl(extension.isOmitSourceMap());
+        options.setIndent(retrieveIndent(extension.getIndentSpaces()));
+    }
+
+    private String retrieveIndent(Integer indentSpaces) {
+        StringBuilder indent = new StringBuilder();
+        for (int i = 0; i < indentSpaces; i++) {
+            indent.append(" ");
+        }
+        return indent.toString();
+    }
+
+    private OutputStyle retrieveStyle(String outputStyle) {
+        OutputStyle style = OutputStyle.NESTED;
+
+        if (outputStyle != null) {
+            switch (outputStyle.toUpperCase()) {
+                case "COMPACT":
+                    style = OutputStyle.COMPACT;
+                    break;
+                case "COMPRESSED":
+                    style = OutputStyle.COMPRESSED;
+                    break;
+                case "EXPANDED":
+                    style = OutputStyle.EXPANDED;
+                    break;
+                default:
+                    style = OutputStyle.NESTED;
+                    break;
+            }
+        }
+
+        return style;
     }
 
     private void write(File file, String css) {
@@ -145,7 +183,10 @@ public class SassCompiler {
 
         if (file != null && file.isFile()) {
             String fileName = file.getName();
-            isSass = fileName.contains(".") && SASS.equals(fileName.substring(fileName.lastIndexOf(".") + 1));
+            if (fileName.contains(".")) {
+                String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+                isSass = SASS.equals(extension.toLowerCase()) || CSS.equals(extension.toLowerCase());
+            }
         }
 
         return isSass;

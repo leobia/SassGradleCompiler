@@ -44,10 +44,13 @@ The usage of the plugin it's pretty simple, first you define the options (inside
       indentWithTabs = false
     }
 
- - **inputPath**: (required) it tells the plugin where to search sass and css files (it is not recursive, this means that it will only search inside this directory and not inside its subdirectory)
- - **outputPath**: where the file output should be saved (it will be saved as style.css)
- - **sass**: true consider .sass files, false consider .scss files
- - **outputStyle** : possible style are "nested" (default), "compressed" (minified), "compact" and "expanded"
+
+|Option       |Type     |Description                                                             |
+|-------------|---------|------------------------------------------------------------------------|
+|inputPath*   |String   |It telss the plugin where to search input files (not recursive)         |
+|outputPath   |String   |Directory where output should be saved (will be saved as *style.css*)   |
+|sass         |Boolean  |Tells which files should be considered, **true** -> *.sass*, **false** -> *.scss*       |
+|outputStyle  |String   |Possible values: *nested* (default), *compressed* (minified), *compact* and *expanded*    |
 
 and then you can call the task:
 

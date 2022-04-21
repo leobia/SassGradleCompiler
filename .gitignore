@@ -4,4 +4,6 @@ build/
 demo/.gradle/
 demo/build/
 repo/
+demo/
 /demo/
+/demo/resources/sass/

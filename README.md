@@ -5,6 +5,8 @@
 
 A simple Sass compiler for gradle (tested only on Gradle 6.0+). Given a folder containing .sass and .css files, the plugin will compile them into a single file. 
 
+> The plugin does not seem to work on a linux environment due to a dependency bug. For an alternative and for more information read [here](https://github.com/leobia/SassGradleCompiler/issues/1#issuecomment-1106609529)
+
 ## Instructions :pencil:
 
 #### Import the plugin
